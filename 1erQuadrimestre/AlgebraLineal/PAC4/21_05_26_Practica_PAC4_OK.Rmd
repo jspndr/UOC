@@ -1,0 +1,213 @@
+---
+title: "PAC4 - Algebrea lineal"
+author: "Josep Andreu Miralles"
+date: "22/5/2021"
+output: pdf_document
+---
+
+
+#
+*1. [5%] Genereu un vector label que contingui la cinquena columna (Month) del data frame airquality. De la mateixa manera, genereu una matriu W de 153 files i 4 columnes del data frame airquality. Per a generar la matriu feu servir, per exemple, as.matrix. Assegureu-vos que tant label com W són matrius i no data frames fent servir la instrucció:* 
+
+*1 > class ( label )*  
+*2 [1] "integer"*  
+*3 > class (W)*  
+*4 [1] "matrix" "array"*
+
+``````{r}
+nycair <- airquality
+nycair
+```
+``````{r}
+label <- nycair [, "Month"]
+label
+class(label)
+```
+``````{r}
+W <- as.matrix(nycair[, 1:4])
+W
+class(W)
+```
+
+#
+*2. [5%] Una part important del tractament de les dades és el seu preprocessament. El primer pas és comprovar que no hi ha cap observació sense valor en alguna o algunes variables. Una manera de fer-ho és repassar visualment el conjunt de dades. Ara bé, donat que tenim 153 x 6 = 612 valors, val la pena fer-ho de forma automàtica. A R, la instrucció is.na(W) retornarà una matriu plena de TRUE (equivalent a un 1) o FALSE (equivalent a un zero) en funció de si falta alguna dada o no, respectivament. Finalment, si calculem la suma de tots els elements d'aquesta matriu, amb la instrucció sum obtindrem un 0 si no hi ha cap valor que falti o un altre nombre natural en funció de les dades que faltin. Qué obteniu? Quantes dades falten?*
+
+``````{r}
+is.na(W)
+```
+``````{r}
+sum(is.na(W))
+sum(is.na(W[,1]))
+sum(is.na(W[,2]))
+sum(is.na(W[,3]))
+sum(is.na(W[,4]))
+```
+#
+**Falten 44 dades en total.**
+
+#
+*3. [5%] Com haureu pogut veure en la pregunta anterior, falten una quantitat important de dades. El paquet mice proporciona una funció interessant, md.pattern que ens permet veure, amb un cop d'ull, el patró de dades que falten. Si carregueu aquesta llibreria i executeu les instruccions:*
+
+*1 > library ( mice )*  
+*2 > md.pattern (W)*
+
+*obtindreu una matriu similar a aquesta (atenció! no obtindreu la mateixa matriu):*
+
+*1 Wind Temp Solar .R Ozone*
+*2 98    1   1   1   1   0*
+*3 45    1   1   1   0   1*
+*4 6     1   1   0   1   1*
+*5 4     1   1   0   0   2*
+*6       0   0   10  49  59*
+
+*Aquesta matriu s'ha d'interpretar de la següent manera:*
+
+*- hi ha 98 observacions on no hi falta cap dada;*
+*- hi ha 45 observacions on hi falta la dada de la variable    Ozone;*
+*- hi ha 6 observacions on hi falta la dada de la variable     Solar.R; i*
+*- hi ha 4 observacions on hi falten les dades de les variables Solar.R i Ozone.*
+
+*En total, faltarien 59 dades.* 
+
+*Per a les dades d'aquesta pràctica, quina matriu obteniu?*
+
+``````{r}
+library(mice)
+md.pattern(W)
+```
+
+#
+**Falten 44 dades en total, 7 en la columna Solar.R i 37 en la columna Ozone.**
+
+#
+*4. [5%] Abans de poder continuar amb la nostra anàlisi, cal procedir a completar les dades no disponibles. Aquest procés rep el nom de data imputation (imputació de dades). Existeix una gran diversitat de maneres diferents d'imputar les dades que falten, com ara la mitjana aritmètica o la mediana, entre d'altres. En aquest cas, farem servir el mètode anomenat predictive mean matching1. Però no us preocupeu, ja que no haureu de programar aquest mètode! La funció mice s'encarregarà de tot, si escriviu:*
+
+*1 > nycairi <- mice ( data = W,m = 5, method = " pmm ", maxit = 50, seed = 500)*
+*2 > W <- complete ( nycairi ,1)*
+
+*Noteu que hem redefinit la matriu W, que ara ja no conté dades que falten.*
+
+``````{r}
+nycairi <- mice(data = W, m = 5, method = "pmm", maxit = 50, seed = 500)
+W <- complete (nycairi, 1)
+W
+W[5,2]
+```
+
+#
+*5. [5%] Representeu en un diagrama de dispersió, a mode d'exemple, la primera variable (Ozone) respecte de la segona (Solar.R). Representeu també la segona variable (Solar.R) respecte de la tercera (Wind). Feu servir la instrucció plot amb les opcions type = "p" (punts) i col = label. L'opció col = label us permetrà veure, de color diferent, les observacions dels diferents mesos. Qué observeu? Les classes se superposen o es poden separar clarament?*
+
+``````{r}
+plot (W[,1], W[,2], type = "p", col = label)
+
+plot (W[,2], W[,3], type = "p", col = label)
+```
+
+#
+*6. [5%] Escaleu les dades de la matriu W tal com s'explica a la Secció 2.1 del mòdul. Anomeneu a la matriu resultant Ws. Comproveu que la mitjana aritmètica de les quatre columnes de la matriu Ws és zero (de fet, obtindreu un valor molt petit, proper al zero de màquina) i que la desviació tipus de les quatre columnes és 1. Podeu fer servir les instruccions mean i sd. Quina d'aquestes dues instruccions us ajudarà a resoldre aquesta pregunta:*
+
+*- Aquesta? apply(Ws,1,mean)*
+*- O aquesta? apply(Ws,2,mean)*
+
+*Justifiqueu la resposta.*
+
+``````{r}
+Ws <- scale (W, center = TRUE, scale = TRUE)
+Ws
+apply (Ws, 2, mean)
+apply (Ws, 2, sd)
+Ws[3,2]
+```
+
+# 
+**Les instruccions adequades són "apply (Ws, 2, mean)" i "apply (Ws, 2, sd)", ja que la variable 2 es refereix a realitzar el càlcul sobre les columnes de la matriu.**
+
+#
+*7. [10%] Calculeu la matriu de covariàncies de Ws tal i com s'explica a la Secció 2.2 del mòdul. Anomeneu CWs a la matriu de covariàncies. Quin parell de variables (diferents) presenten la covariància més gran, en valor absolut? Representeu en un diagrama de dispersió aquestes dues variables, amb les mateixes opcions gràfiques que en les preguntes anteriors.*
+
+``````{r}
+CWs <- t(Ws)%*%Ws/152
+CWs
+plot(W[,1], W[,4], type = "p", col = label)
+sum(CWs)
+```
+
+#
+**El parell de variables que presenten una covariància més gran són la 1 "Ozone" i la 4 "Temp".**
+
+##
+*8. [10%] Quin parell de variables (diferents) presenten la covariància més petita, en valor absolut?* 
+*Representeu en un diagrama de dispersió aquestes dues variables, amb les mateixes opcions gràfiques que en les preguntes anteriors.*
+
+``````{r}
+CWs
+plot(W[,2], W[,3], type = "p", col = label)
+```
+
+#
+**El parell de variables que presenten una covariància més petita són la 2 "Solar R." i la 3 "Wind".**
+
+#
+*9. [10%] Calculeu, sense fer servir la comanda prcomp, els valors i els vectors propis de la matriu de covariàncies CWs. Anomeneu P a la matriu que conté, per columnes, els vectors propis.*
+*Aneu al qüestionari associat a la pràctica i mireu quin és el valor de N que us ha estat assignat. Quina és la variabilitat retinguda per les primeres N components principals?*
+
+``````{r}
+vv_prop <- eigen(CWs)
+vv_prop
+P <- vv_prop$vectors
+P
+class (P)
+
+variabilitat_N1 <- (vv_prop$values[1]/4)*100
+variabilitat_N2 <- (vv_prop$values[2]/4)*100
+variabilitat_N3 <- (vv_prop$values[3]/4)*100
+variabilitat_N1_3 <- variabilitat_N1 + variabilitat_N2 + variabilitat_N3
+
+variabilitat_N1_3
+```
+
+#
+**Les 3 primeres components principals retenen una variabilitat del 92.33167%.**
+
+#
+*10. [10%] La primera component principal, PC1, és un vector format per la combinació lineal de les quatre variables originals:*
+
+*PC1 = a1 x Ozone + a2 x Solar.R + a3 x Wind + a4 x Temp*
+
+*Els coeficients ai; i = 1; 2; 3; 4, en valor absolut, són també una mesura de la importància de cada variable original amb l'objectiu de la classificació de les dades originals. Des d'aquest punt de vista, quines són les dues variables més importants en la primera component principal? I en la segona component principal? Justifiqueu la vostra resposta.*
+
+``````{r}
+PC1 <- P[,1]
+PC2 <- P[,2]
+PC1
+PC2
+```
+
+#
+**Les dues variables més importants en la primera component principal són, la [u1] "Ozone" i la [u4] "Temp". Pel que respecta a la segona component principal són, la [u2] "Solar R." i la [u3] "Wind".**
+
+#
+*11. [10%] Representeu gràficament els 153 punts formats per la projecció de les dades originals normalitzades sobre la primera i la segona components principals. Com abans, feu servir la instrucció plot amb les opcions type = "p" (punts) i col = label. Qué podeu dir ara mateix sobre les classes (mesos de l'any)? Se superposen o es poden separar clarament? És possible que, tot i haver fet l'anàlisi de components principals, encara no se separin els punts.*
+
+*Aquest fet està explicat a l'article:*
+
+*Pozo, Francesc; Vidal, Yolanda. 2016. "Wind Turbine Fault Detection Through Principal Component Analysis and Statistical Hypothesis Testing". Energies 9, no. 1: 3. https://doi.org/10.3390/en9010003 on es demostra que PCA no és suficient per separar i cal fer un pas més que, en aquest cas, és l'ús del contrast d'hipòtesi.*
+
+``````{r}
+T <- Ws%*%P
+plot(T[,1], T[,2], type = "p", col = label, xlab = "PC1(56.13%)", ylab = "PC2(24.03%)")
+```
+
+#
+*12. [10%] Representeu gràficament només els 31 punts corresponents al mes de maig i els 31 punts corresponents al mes de juliol formats per la projecció de les dades originals normalitzades sobre la primera i la segona components principals. Com abans, feu servir la instrucció plot amb les opcions type = "p" (punts) i col = label[c(1:31,62:92)]. Qué podeu dir ara?*
+
+*Som capaços de distingir el mes de maig i el mes de juliol?*
+
+
+``````{r}
+plot(T[c(1:31,62:92), 1], T[c(1:31,62:92),2], type = "p", col = label[c(1:31,62:92)], 
+     xlab = "PC1(56.13%)", ylab = "PC2(24.03%)")
+```
+
+#
+**Les dades corresponents al mes de maig i al mes de juliol són perfectament distingibles.**

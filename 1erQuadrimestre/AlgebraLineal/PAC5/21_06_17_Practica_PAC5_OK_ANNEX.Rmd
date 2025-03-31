@@ -1,0 +1,207 @@
+---
+title: "PAC5 - Algebrea lineal"
+author: "Josep Andreu Miralles"
+date: "13/6/2021"
+output:
+  pdf_document: 
+    latex_engine: xelatex
+  html_document:
+    df_print: paged
+  word_document: default
+---
+
+
+#
+*1. [10%] Completeu la matriu de transició de la Taula 1 tot seguint les indicacions descrites en l'enunciat de la pràctica.*
+
+$$\begin{pmatrix}1 & 0 & 0 & 0 & 0\\1/3 & 0 & 0 & 1/3 & 1/3\\1/2 & 0 & 0 & 1/2 & 0\\1/4 & 1/4 & 1/4 & 0 & 1/4\\0 & 0 & 0 & 0 & 1\end{pmatrix}$$ 
+
+#
+*2. [5%] Considereu la matriu de transició de la Taula 1 (ja completada) i definiu la matriu de transició P per files (no per columnes!). Si genereu un vector x amb els 25 valors de la taula (per files), podeu generar la matriu P de la següent manera:*
+
+*1 labels <-c("1","2","3","4","5")*
+*2 byRow <- TRUE*
+*3 P<-matrix(data=x,byrow=byRow,nrow =5,dimnames=list(labels,labels))*
+
+```{r}
+probabilitats <- c(1,0,0,0,0,1/3,0,0,1/3,1/3,1/2,0,0,1/2,0,1/4,1/4,1/4,0,1/4,0,0,0,0,1)
+probabilitats
+etiquetes <- c("1","2","3","4","5")
+byRow <- TRUE
+etiquetes
+P <- matrix(data=probabilitats, byrow=byRow, nrow=5, dimnames=list(etiquetes,etiquetes))
+P
+```
+
+#
+*3. [5%] Comproveu que la suma de les probabilitats de cada una de les cinc files és 1.*
+
+```{r}
+suma_files = rowSums (P[ , 1:5])
+suma_files
+```
+
+#
+*4. [5%] Creeu la cadena de Markov discreta definida per la matriu de transicions P, i anomeneula mcP. Ajudeu-vos del següent codi, on P és la matriu definida en la pregunta 2:*
+
+```{r}
+library("markovchain")
+
+mcP<-new("markovchain",states=etiquetes,byrow=byRow,transitionMatrix=P,name="The mouse and the maze")
+mcP
+```
+
+#
+*5. [5%] Feu un diagrama de la vostra cadena de Markov discreta. Podeu ajudar-vos del següent codi:*
+
+*1 plot(mcP,package="diagram",cex=.6)*
+
+```{r}
+plot(mcP, package="diagram",cex=.6)
+```
+
+# 
+*6. [10%] Una cadena de Markov es diu regular (també primitiva o ergódica) si hi ha alguna potència positiva de la matriu de transició les entrades de la qual siguin totes estrictament majors que zero. Però no serà necessari mirar les potències de la matriu de transició mcPm per a tot m fins a l'infinit (afortunadament!). Un teorema ens diu que és suficient examinar les potències mcPm per a valors de m més petits o iguals a (n - 1)2 + 1 on n és el nombre d'estats (en el nostre cas, n = 5). Genereu un programa o escriviu unes línies de codi que, donada la cadena de Markov mcP, ens retorni una llista mcL de m = (5􀀀1)2+1 = 17 elements, on l'element i-èssim de la llista sigui la suma del nombre de zeros de la potència mcPi. Com a ajuda, penseu que el primer element de la llista ha de ser 14.*
+
+```{r}
+mcL <- c()
+for (var in 1:17) {mcL[var]=sum(apply((mcP^var)@transitionMatrix, 2, function(x) sum(x == 0)))}
+mcL
+```
+
+# 
+*7. [10%] Com hem dit, la cadena de Markov serà regular si algun element de la llista mcL és zero (el que implica que alguna potència de la matriu de transició té tots els elements estrictament positius). La cadena de Markov és regular? En cas afirmatiu, tindrà un únic estat estacionari. En cas contrari, no ho podrem afirmar. Mireu si el resultat que obteniu en aquesta pregunta és compatible amb la vostra resposta de la pregunta 10.*
+
+```{r}
+mcL
+sum(mcL)
+```
+
+#
+**Com veiem no hi ha cap zero entre els elements que conformen les diferents potències de la matriu de transició. Així doncs, podem afirmar que mcP no és una cadena de Markov regular.**
+
+#
+*8. [10%] La cadena de Markov mcP té dos estats absorbents. Quins són? Diries que l'existència d'estats absorbents implica la no regularitat de la cadena de Markov? Justifiqueu clarament la vostra resposta.*
+
+```{r}
+absorbingStates(mcP)
+```
+#
+**Els dos estats absorvents d'mcP corresponen a les estances 1 i 5, ja que un cop el ratolí entri en aquestes habitacions ja no en sortirà.**
+
+**Una cadena de Markov és regular, primitiva o ergònica si cada estat pot ser aconseguit per una altre estat mitjançant un nombre finit de passos.**
+
+**Notem que en el cas de mcL és impossible anar des dels estat absorvents (estances 1 i 5) als estats transitoris, per tant mcP no és regular.**
+
+#
+*9. [5%] Si l'habitació a la qual es desplaça el ratolí és la tercera, que ens diu la matriu de transició de la cadena de Markov mcP sobre l'estat actual del ratolí? Justifiqueu la vostra resposta.*
+
+```{r}
+A<-c(0,0,1,0,0)
+EA<-A%*%P
+EA
+```
+
+**Al multiplicar l'estat inicial (ratolí en estança 3) amb la matriu de transició P, obtenim la fila 3 de la cadena de Markov mcL. En aquesta fila hi ha les probabilitats que té el ratolí per abandonar l'estança on es troba, O siguí que hi ha un 50% de probabilitats que el ratolí entri a l'estança 1 i un 50% de probabilitats de que entri a l'estança 4.**
+
+#
+*10. [10%] Sense fer cap tipus de càlcul, digueu i justifiqueu quantes distribucions estacionàries té la cadena de Markov mcP. Comproveu el vostre resultat amb R. També amb R, calculeu quants vectors propis de la matriu P tenen valor propi 1?*
+
+**S'enten per distribució estacionària una distribución estable que no canvia amb el pas del temps, així doncs mcP disposa de dues distribucions estacionàries, corresponents a que el ratolí es trobi a les estances 1 o 5, ja que el seu estat ja no canviarà amb el pas del temps.**
+
+```{r}
+steadyStates(mcP)
+```
+
+**Com podem veure R corrobora que existeixen dues distribucions estacionàries, corresponents a les estances 1 i 5.**
+
+```{r}
+V <- eigen(P)
+V$values
+```
+**Com podem observar hi ha dos vectors propis de P que tenen valor propi 1.**
+
+#
+*11. [10%] Aneu al qüestionari associat a la pràctica i mireu quin és el valor de N que us ha estat assignat. Quina és la probabilitat que el ratolí acabi a l'habitació 1 si ha estat inicialment ubicat a l'habitació N=4?*
+
+```{r}
+mcP^999
+mcP^1000
+```
+**Com hem esmentat, les estances 1 i 5 són estats absorvents. Elevem mcP a una potència igual a 999 i 1000 i veiem que el resultat es manté estable, T^999=T^1000, la matriu no cambia per molt que augmentem la potència. El resultat obtingut ens dona la probabilitat d'acabar en cada estat absorvent depenent de l'estat inicial. S'observa que a llarg terme, el ratolí acabarà a l'estança 1 o bé a l'estança 5.**
+
+**N=4. La quarta fila ens indica que si el ratolí esta inicialment a l'habitació 4, llavors té una probabilitat de 0.578947 de que acabi a l'estança 1 amb el formatge.**
+
+#
+*12. [10%] I quina és la probabilitat que el ratolí acabi a l'habitació 5 si ha estat inicialment ubicat a l'habitació N=4?*
+
+```{r}
+mcP^1000
+```
+**N=4. De nou partim de la l'estança 4. La quarta fila ens indica que si el ratolí esta inicialment a l'habitació 4, llavors té una probabilitat de 0.421053 de que acabi atrapat a l'estança 5.**
+
+#
+*ANNEX: ALTERNATIVA DE CÀLCUL DELS EXERCICICS 11 I 12.*
+
+**Partim de la matriu de transició P.**
+
+$$\begin{pmatrix}1 & 0 & 0 & 0 & 0\\1/3 & 0 & 0 & 1/3 & 1/3\\1/2 & 0 & 0 & 1/2 & 0\\1/4 & 1/4 & 1/4 & 0 & 1/4\\0 & 0 & 0 & 0 & 1\end{pmatrix}$$
+**Per poder estudiar les cadenes de Markov absorvents és precis reordenar la matriu de transició de manera que les files corresponents als estats absorvents apareguin en primer lloc. Col·locant la fila 5 en segona posició i la columna 5 en la segona obtenim la matriu canònica C.**
+
+```{r}
+etiX <- c("1","5","2","3","4")
+etiY <- c("1","5","2","3","4")
+C_dades<- c(1,0,0,0,0,0,1,0,0,0,1/3,1/3,0,0,1/3,1/2,0,0,0,1/2,1/4,1/4,1/4,1/4,0)
+C <- matrix(data=C_dades, byrow=byRow, nrow=5, dimnames=list(etiX,etiY))
+C
+```
+**Podem dividir la matriu en forma canònica en quatre submatrius. La primera es la matriu unitat I, de l'ordre corresponent. La segona, la matriu nula 0. La tercera conté les probabilitats de pas d'estats transitoris a estats absorvents Q. La quarta conté les probabilitats d'estats transitoris a estats transitoris M.**
+
+$$\begin{pmatrix} I & 0\\Q & M\end{pmatrix}$$
+**La matriu I...**
+
+$$
+\begin{pmatrix} 1 & 0\\0 & 1\end{pmatrix}
+$$
+**La matriu 0...**
+
+$$
+\begin{pmatrix} 0 & 0 & 0\\0 & 0 &0\end{pmatrix}
+$$
+**La matriu Q...**
+
+```{r}
+Q_dades <- c(1/3, 1/3, 1/2, 0, 1/4, 1/4)
+Q <- matrix(data=Q_dades, byrow=byRow, nrow=3)
+Q
+```
+
+**La matriu M...**
+
+```{r}
+M_dades<- c(0, 0, 1/3, 0, 0, 1/2, 1/4, 1/4, 0)
+M <- matrix(data=M_dades, byrow=byRow, nrow=3)
+M
+```
+
+**La matriu F anomenada matriu fonamental de la cadena de Markov absorvent és igual a (In-M)^-1.**
+
+```{r}
+In_dades <- c(1, 0, 0, 0, 1, 0, 0, 0, 1)
+In <- matrix(data=In_dades, byrow=byRow, nrow=3)
+In
+```
+
+```{r}
+F <- solve(In-M) 
+F
+```
+**Ara per obtenir les probabilitats en els estas absorvents tan sols ens cal multiplicar les matrius FxQ.**
+
+```{r}
+S <- F%*%Q
+rownames(S) <- c("2","3","4")
+colnames(S) <- c("1","5")
+S
+```
+**En el cas que el ratolí estigui inicialment a l'habitació 4, té una probabilitat de 0.578947 de que acabi a l'estança 1 amb el formatge. I en el cas que el ratolí estigui inicialment a l'habitació 4, té una probabilitat de 0.421053 de que acabi atrapat a l'estança 5. Com veiem s'obté un resultat igual al aconseguit anteriorment mitjançant la matriu mcP^100.**
