@@ -1,0 +1,114 @@
+---
+title: "PAC2 (Pràctica)"
+author: "Josep Andreu Miralles"
+date: "15/10/2020"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+# EXERCICI 1
+
+Les dades de l'altura d'un grup d'homes reclutats per l'exèrcit a la fi de segle
+XIX. (De AF Blakeslee, J. Hered. S: 551 (1914)) es podia modelitzar amb una llei
+normal amb esperança 168 cm i desviació típica 6,75 cm.
+a) Calculeu la probabilitat que un home tingui una alçada entre 160 cm i 170 cm.
+b) Calculeu la probabilitat que un home mesuri exactament 167,25 cm.
+c) Quins són els quartils de la distribució?
+d) Per sobre de que alçada hauríem de trobar el 66% dels homes?
+
+## Solució
+
+## a) Calculeu la probabilitat que un home tingui una alçada entre 160 cm i 170 cm.
+
+``````{r}
+pnorm (170,mean=168,sd=6.75)-pnorm(160,mean=168,sd=6.75)
+prop_160_170<- pnorm(c(160,170),mean=168,sd=6.75,lower.tail=TRUE)
+```
+
+## b) Calculeu la probabilitat que un home mesuri exactament 167,25 cm.
+
+``````{r}
+dnorm(167.25,168,6.75)
+```
+
+## c) Quins són els quartils de la distribució?
+
+``````{r}
+qnorm(0.25,168,6.75)
+qnorm(0.5,168,6.75)
+qnorm(0.75,168,6.75)
+```
+
+## d) Per sobre de que alçada hauríem de trobar el 66% dels homes?
+
+``````{r}
+qnorm(0.66,168,6.75,lower.tail=FALSE)
+```
+
+## EXERCICI 2
+
+Càlcul de probabilitats amb R. Considerem Y una variable aleatòria que segueix
+una distribució B(30;0.25). i Z una variable Poisson de paràmetre 5.
+a) Calculeu, utilitzant R, P (Y = 10), P (Y <3), P (Y> 15).
+b) Determineu a tal que P (X <= a) = 0.4.
+
+## Solució
+
+## a) Calculeu, utilitzant R, P (Y = 10), P (Y <3), P (Y> 15).
+
+``````{r}
+dbinom(10,size=30,prob=0.25)
+pbinom(2,size=30,prob=0.25)
+pbinom(16,size=30,prob=0.25,lower.tail=FALSE)
+```
+
+## b) Determineu a tal que P (X <= a) = 0.4.
+
+``````{r}
+qpois(0.4,lambda=5)
+```
+
+## EXERCICI 3
+
+El fitxer "vendes_pac1_P_15_2" inclou les següents variables referides a
+botigues:
+m2: superfície
+Ubi: ubicació (1 Centre ciutat, 2 Centre comercial, 3 Zona de vianants, 4 Barris, 5
+Extraradi)
+PreuAm2: preu del lloguer per m2 abans de fer reformes
+PreuDm2: preu del lloguer per m2 després de fer reformes
+AugmentFact: Augment de la facturació durant l'últim any.
+Hem generat la variable CatAM2 codificant la variable PreuAm2 en quatre categoria,
+definides a partir dels quartils: [min, Q_1], (Q1, Q2], (Q2, Q3], [Q3max]. Hem obtingut
+la següent taula de contingència:
+
+Si agafem una botiga a l'atzar, calculeu (manualment):
+a) La probabilitat que la ubicació sigui "Extraradi"
+b) La probabilitat que la ubicació sigui "Extraradi" i el preu del lloguer per metre
+quadrat abans de la reforma estigui (Q1, Q2].
+c) La probabilitat que la ubicació sigui "Extraradi" sabent que el preu del lloguer
+per metre quadrat abans de la reforma estigui (Q1, Q2].
+
+## Solució
+
+## a) La probabilitat que la ubicació sigui "Extraradi"
+
+P(Extraradi) = P(Extraradi INTERSECCIO [8,9])+P(Extraradi INTERSECCIO (9,12])+P(Extraradi INTERSECCIO (12,13])+P(Extraradi INTERSECCIO (13,16])
+
+P(Extraradi)=3/99+5/99=8/99=0.0808=8.08%
+
+## b) La probabilitat que la ubicació sigui "Extraradi" i el preu del lloguer per metre quadrat abans de la reforma estigui (Q1,Q2].
+
+(Q1,Q2]=(9,12]
+
+P(Extraradi INTERSECCIO (9,12]) = 5/99 = 0.0505 = 5.05%
+
+## c) La probabilitat que la ubicació sigui "Extraradi" sabent que el preu del lloguer per metre quadrat abans de la reforma estigui (Q1,Q2].
+
+(Q1,Q2]=(9,12]
+
+P(Extraradi CONDICIONAT A (9,12]) = P(Extraradi INTERSECCIO (9,12])/P((9,12])
+
+P(Extraradi CONDICIONAT A (9,12]) = (5/99)/(42/99) = 5/42 = 0.119 = 11.90%

@@ -1,0 +1,324 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={PAC2 (Pràctica)},
+  pdfauthor={Josep Andreu Miralles},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+
+\title{PAC2 (Pràctica)}
+\author{Josep Andreu Miralles}
+\date{15/10/2020}
+
+\begin{document}
+\maketitle
+
+\hypertarget{exercici-1}{%
+\section{EXERCICI 1}\label{exercici-1}}
+
+Les dades de l'altura d'un grup d'homes reclutats per l'exèrcit a la fi
+de segle XIX. (De AF Blakeslee, J. Hered. S: 551 (1914)) es podia
+modelitzar amb una llei normal amb esperança 168 cm i desviació típica
+6,75 cm. a) Calculeu la probabilitat que un home tingui una alçada entre
+160 cm i 170 cm. b) Calculeu la probabilitat que un home mesuri
+exactament 167,25 cm. c) Quins són els quartils de la distribució? d)
+Per sobre de que alçada hauríem de trobar el 66\% dels homes?
+
+\hypertarget{soluciuxf3}{%
+\subsection{Solució}\label{soluciuxf3}}
+
+\hypertarget{a-calculeu-la-probabilitat-que-un-home-tingui-una-aluxe7ada-entre-160-cm-i-170-cm.}{%
+\subsection{a) Calculeu la probabilitat que un home tingui una alçada
+entre 160 cm i 170
+cm.}\label{a-calculeu-la-probabilitat-que-un-home-tingui-una-aluxe7ada-entre-160-cm-i-170-cm.}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{pnorm}\NormalTok{ (}\DecValTok{170}\NormalTok{,}\DataTypeTok{mean=}\DecValTok{168}\NormalTok{,}\DataTypeTok{sd=}\FloatTok{6.75}\NormalTok{)}\OperatorTok{-}\KeywordTok{pnorm}\NormalTok{(}\DecValTok{160}\NormalTok{,}\DataTypeTok{mean=}\DecValTok{168}\NormalTok{,}\DataTypeTok{sd=}\FloatTok{6.75}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.498526
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{prop_}\DecValTok{160}\NormalTok{_}\DecValTok{170}\NormalTok{<-}\StringTok{ }\KeywordTok{pnorm}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\DecValTok{160}\NormalTok{,}\DecValTok{170}\NormalTok{),}\DataTypeTok{mean=}\DecValTok{168}\NormalTok{,}\DataTypeTok{sd=}\FloatTok{6.75}\NormalTok{,}\DataTypeTok{lower.tail=}\OtherTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{b-calculeu-la-probabilitat-que-un-home-mesuri-exactament-16725-cm.}{%
+\subsection{b) Calculeu la probabilitat que un home mesuri exactament
+167,25
+cm.}\label{b-calculeu-la-probabilitat-que-un-home-mesuri-exactament-16725-cm.}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{dnorm}\NormalTok{(}\FloatTok{167.25}\NormalTok{,}\DecValTok{168}\NormalTok{,}\FloatTok{6.75}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.05873885
+\end{verbatim}
+
+\hypertarget{c-quins-suxf3n-els-quartils-de-la-distribuciuxf3}{%
+\subsection{c) Quins són els quartils de la
+distribució?}\label{c-quins-suxf3n-els-quartils-de-la-distribuciuxf3}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{qnorm}\NormalTok{(}\FloatTok{0.25}\NormalTok{,}\DecValTok{168}\NormalTok{,}\FloatTok{6.75}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 163.4472
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{qnorm}\NormalTok{(}\FloatTok{0.5}\NormalTok{,}\DecValTok{168}\NormalTok{,}\FloatTok{6.75}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 168
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{qnorm}\NormalTok{(}\FloatTok{0.75}\NormalTok{,}\DecValTok{168}\NormalTok{,}\FloatTok{6.75}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 172.5528
+\end{verbatim}
+
+\hypertarget{d-per-sobre-de-que-aluxe7ada-hauruxedem-de-trobar-el-66-dels-homes}{%
+\subsection{d) Per sobre de que alçada hauríem de trobar el 66\% dels
+homes?}\label{d-per-sobre-de-que-aluxe7ada-hauruxedem-de-trobar-el-66-dels-homes}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{qnorm}\NormalTok{(}\FloatTok{0.66}\NormalTok{,}\DecValTok{168}\NormalTok{,}\FloatTok{6.75}\NormalTok{,}\DataTypeTok{lower.tail=}\OtherTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 165.2159
+\end{verbatim}
+
+\hypertarget{exercici-2}{%
+\subsection{EXERCICI 2}\label{exercici-2}}
+
+Càlcul de probabilitats amb R. Considerem Y una variable aleatòria que
+segueix una distribució B(30;0.25). i Z una variable Poisson de
+paràmetre 5. a) Calculeu, utilitzant R, P (Y = 10), P (Y \textless3), P
+(Y\textgreater{} 15). b) Determineu a tal que P (X \textless= a) = 0.4.
+
+\hypertarget{soluciuxf3-1}{%
+\subsection{Solució}\label{soluciuxf3-1}}
+
+\hypertarget{a-calculeu-utilitzant-r-p-y-10-p-y-3-p-y-15.}{%
+\subsection{a) Calculeu, utilitzant R, P (Y = 10), P (Y \textless3), P
+(Y\textgreater{}
+15).}\label{a-calculeu-utilitzant-r-p-y-10-p-y-3-p-y-15.}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{dbinom}\NormalTok{(}\DecValTok{10}\NormalTok{,}\DataTypeTok{size=}\DecValTok{30}\NormalTok{,}\DataTypeTok{prob=}\FloatTok{0.25}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.09086524
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{pbinom}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DataTypeTok{size=}\DecValTok{30}\NormalTok{,}\DataTypeTok{prob=}\FloatTok{0.25}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.01059587
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{pbinom}\NormalTok{(}\DecValTok{16}\NormalTok{,}\DataTypeTok{size=}\DecValTok{30}\NormalTok{,}\DataTypeTok{prob=}\FloatTok{0.25}\NormalTok{,}\DataTypeTok{lower.tail=}\OtherTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.0002156938
+\end{verbatim}
+
+\hypertarget{b-determineu-a-tal-que-p-x-a-0.4.}{%
+\subsection{b) Determineu a tal que P (X \textless= a) =
+0.4.}\label{b-determineu-a-tal-que-p-x-a-0.4.}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{qpois}\NormalTok{(}\FloatTok{0.4}\NormalTok{,}\DataTypeTok{lambda=}\DecValTok{5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 4
+\end{verbatim}
+
+\hypertarget{exercici-3}{%
+\subsection{EXERCICI 3}\label{exercici-3}}
+
+El fitxer ``vendes\_pac1\_P\_15\_2'' inclou les següents variables
+referides a botigues: m2: superfície Ubi: ubicació (1 Centre ciutat, 2
+Centre comercial, 3 Zona de vianants, 4 Barris, 5 Extraradi) PreuAm2:
+preu del lloguer per m2 abans de fer reformes PreuDm2: preu del lloguer
+per m2 després de fer reformes AugmentFact: Augment de la facturació
+durant l'últim any. Hem generat la variable CatAM2 codificant la
+variable PreuAm2 en quatre categoria, definides a partir dels quartils:
+{[}min, Q\_1{]}, (Q1, Q2{]}, (Q2, Q3{]}, {[}Q3max{]}. Hem obtingut la
+següent taula de contingència:
+
+Si agafem una botiga a l'atzar, calculeu (manualment): a) La
+probabilitat que la ubicació sigui ``Extraradi'' b) La probabilitat que
+la ubicació sigui ``Extraradi'' i el preu del lloguer per metre quadrat
+abans de la reforma estigui (Q1, Q2{]}. c) La probabilitat que la
+ubicació sigui ``Extraradi'' sabent que el preu del lloguer per metre
+quadrat abans de la reforma estigui (Q1, Q2{]}.
+
+\hypertarget{soluciuxf3-2}{%
+\subsection{Solució}\label{soluciuxf3-2}}
+
+\hypertarget{a-la-probabilitat-que-la-ubicaciuxf3-sigui-extraradi}{%
+\subsection{a) La probabilitat que la ubicació sigui
+``Extraradi''}\label{a-la-probabilitat-que-la-ubicaciuxf3-sigui-extraradi}}
+
+P(Extraradi) = P(Extraradi INTERSECCIO {[}8,9{]})+P(Extraradi
+INTERSECCIO (9,12{]})+P(Extraradi INTERSECCIO (12,13{]})+P(Extraradi
+INTERSECCIO (13,16{]})
+
+P(Extraradi)=3/99+5/99=8/99=0.0808=8.08\%
+
+\hypertarget{b-la-probabilitat-que-la-ubicaciuxf3-sigui-extraradi-i-el-preu-del-lloguer-per-metre-quadrat-abans-de-la-reforma-estigui-q1q2.}{%
+\subsection{b) La probabilitat que la ubicació sigui ``Extraradi'' i el
+preu del lloguer per metre quadrat abans de la reforma estigui
+(Q1,Q2{]}.}\label{b-la-probabilitat-que-la-ubicaciuxf3-sigui-extraradi-i-el-preu-del-lloguer-per-metre-quadrat-abans-de-la-reforma-estigui-q1q2.}}
+
+(Q1,Q2{]}=(9,12{]}
+
+P(Extraradi INTERSECCIO (9,12{]}) = 5/99 = 0.0505 = 5.05\%
+
+\hypertarget{c-la-probabilitat-que-la-ubicaciuxf3-sigui-extraradi-sabent-que-el-preu-del-lloguer-per-metre-quadrat-abans-de-la-reforma-estigui-q1q2.}{%
+\subsection{c) La probabilitat que la ubicació sigui ``Extraradi''
+sabent que el preu del lloguer per metre quadrat abans de la reforma
+estigui
+(Q1,Q2{]}.}\label{c-la-probabilitat-que-la-ubicaciuxf3-sigui-extraradi-sabent-que-el-preu-del-lloguer-per-metre-quadrat-abans-de-la-reforma-estigui-q1q2.}}
+
+(Q1,Q2{]}=(9,12{]}
+
+P(Extraradi CONDICIONAT A (9,12{]}) = P(Extraradi INTERSECCIO
+(9,12{]})/P((9,12{]})
+
+P(Extraradi CONDICIONAT A (9,12{]}) = (5/99)/(42/99) = 5/42 = 0.119 =
+11.90\%
+
+\end{document}

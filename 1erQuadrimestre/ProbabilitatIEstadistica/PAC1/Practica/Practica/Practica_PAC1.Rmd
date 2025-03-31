@@ -1,0 +1,108 @@
+---
+title: "PAC1 (Pràctica)"
+author: "Josep Andreu Miralles"
+date: "27/9/2020"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+# EXERCICI 1
+
+a) Calculeu els resums numèrics d’aquestes dades.
+b) Feu un histograma per explicar la variable.
+c) A partir dels resum numèrics i de l’histograma descriviu com són les dades.
+d) Feu la comanda plot(nhtemp). Expliqueu el gràfic que surt. Comenteu si és un gràfic útil per aquestes dades
+
+## Solució
+
+a) Carreguem l'arxiu i mitjançant l'instrucció "summary" calculem els resums numèrics.
+
+  ```{r}
+summary(nhtemp)
+```
+Els resums numèrics són `r summary(nhtemp)`.
+
+b) Fem l'histograma mitjançant l'instrucció "hist" i en modifiquem el títol i el nom dels eixos.
+
+```{r}
+hist(x = nhtemp, main = "Histograma de temperatures mitges a NH 1912 a 1971", xlab = "Temperatura mitja ºF", ylab = "Freqüència absoluta")
+```
+
+c) Com podem veure, les classes són [47,48) ... fins a (54,55]. És un histograma centrat i unimodal, amb un únic pic corresponent a l'interval [51,52), el comportament és lleugermanet simètric, i no es detecten dades extremes ni classes buides.
+
+d) Executem l'ordre "plot(nhtemp)".
+
+```{r}
+plot(nhtemp)
+```
+
+El que s'obté és un gràfic de línies, on s'observa l'evolució de la temperatura (eix Y - ordenades) amb el pas dels anys (eix X - abcisses).
+És un gràfic que mostra clarament l'evolució de la temperatura mitja, i és útil per que ens serveix per detectar tendències i relacions amb altres grafics de línies; en aquest cas podem detectar que hi ha hagut un lleuger increment en la temperatura mitja de New Haven, i amb un clar pic als anys 50s.
+
+# EXERCICI 2
+
+a) Trobeu els resums numèrics (mitjana, mediana, quartils, desviació típica mostral) del
+nombre de contractes signats l’any 2019 i comenteu els resultats.
+b) Obteniu una taula de quants municipis de cada província hi ha a la base de dades. Feu un
+gràfic adient per mostrar la distribució. Comenteu els resultats.
+c) Feu un boxplot de la mitjana dels preus mitjans dels contractes signats l’any 2019
+distingint per províncies i comenteu quines diferències s’hi aprecien.
+
+## Solució
+
+a) Carreguem l'arxiu i busquem els resums numérics demanats tenint en compte de despreciar els valors buits que han estat substituïts per NA per R amb la instrucció na.rm=TRUE.
+
+```{r}
+dades <- read.csv("PIS_MUN.csv", sep = ";")
+attach(dades)
+resum.num <- cbind (mean(N2019,na.rm=TRUE),median(N2019,na.rm=TRUE),sd(N2019,na.rm=TRUE),t(quantile(N2019,na.rm=TRUE)))
+colnames(resum.num) <- c("Mitjana","Mediana","DTM","Mínim","Q1","Q2","Q3","Màxim")
+resum.num
+```
+
+El que veiem es que hi ha una dada que clarament distorsiona la mostra, i que per tan fa augmentar la mitjana però que no afecta la mediana.
+
+b) Aillem la varaible província i creem una taula. El diagrama de sectors ens serveix per representar la proporció de municipis per provincies. El diagrama ens indica que la proposrció de municipis més gran pertany a Barcelona, que Girona i LLeida tenen una proporció similar de municipis i que Tarragona és la que té una proporció més petita de municipis.
+
+```{r}
+taula_prov <- factor(PROV)
+table(taula_prov)
+```
+
+```{r}
+pie(table(taula_prov),col = c("red", "blue", "pink", "green"),main = "Municipis per província")
+```
+
+c) Representem la comparació del diagrama de caixes en horitzontal.
+
+```{r}
+boxplot(dades$M2019 ~ dades$PROV,xlab="Preu mitjà lloguer",ylab="Provincia",names=c("BAR","GIR","LLEI","TAR"),horizontal = TRUE)
+```
+
+# EXERCICI 3
+
+Imagineu que volem estudiar a qui votaran els estudiants de la UOC a les properes eleccions. Podem fer-ho de diverses maneres:
+
+a) Enviant un missatge a través del campus a tots els estudiants i analitzant les respostes.
+b) Seleccionem 9 comarques a l’atzar i seleccionem a l’atzar 50 estudiants d’aquestes comarques als quals truquem per telèfon.
+c) Assignem un número a cada estudiant i truquem als que el seu número és de la forma 12324*n fins que obtinguem 450 respostes.
+
+Digueu quin tipus de mostreig fem servir en cada cas i quins són els seus inconvenients.
+Quin mostreig dels proposats escolliries i per què?
+
+## Solució
+
+a) Podriem dir que no es tracta d'un mostreig, sinò d'un estudi exhaustiu, ja que es consulten tots els individus que formen part de la població objecte de l'estudi. 
+Té l'inconvenient que la consulta requereix que l'estudiant respongui i se senti interpelat per tal que contesti. 
+
+b) Es tracta d'un mostreig per conglomerats. 
+Té l'inconvenient que les comarques són molts diferents les unes a les altres, i les triades poden no abarcar la totalitat de les diferents tipus de comarques, i llavors la mostra pot perdre representivitat. A més a més poden resultar triades comarques que tenen una població molt inferior o superior respecte altres que no han sortit triades i això faria que les característiques d'aquestes quedessin infrarepresentades o sobrerepresentades.
+
+c) Es tracta d'un mostreig sistemàtic. 
+Té el problema que si existeix una certa periodicitat que coincideixi amb l'interval triat.
+
+Jo em decantaria per utilitzar el mostreig sistemàtic, ja que no depèn tan de la voluntat de resposta dels individus objecte del mostreig i tampoc ens podem trobar en el cas de tenir una mostra sobrerepresentada o infrarepresentada segons la comarca de residència dels individus objecte de la mostra. 
+
+
